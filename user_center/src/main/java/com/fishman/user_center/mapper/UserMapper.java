@@ -1,8 +1,18 @@
 package com.fishman.user_center.mapper;
 
+import com.fishman.user_center.model.domain.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fishman.user_center.model.User;
 
+/**
+* @author fishman
+* @description 针对表【user】的数据库操作Mapper
+* @createDate 2024-03-13 22:43:34
+* @Entity generator.domain.User
+*/
 public interface UserMapper extends BaseMapper<User> {
 
 }
+
+
+
+
