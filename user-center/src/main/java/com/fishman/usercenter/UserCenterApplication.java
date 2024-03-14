@@ -1,11 +1,11 @@
-package com.fishman.user_center;
+package com.fishman.usercenter;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.fishman.user_center.mapper")
+@MapperScan("com.fishman.usercenter.Mapper")
 public class UserCenterApplication {
 
     public static void main(String[] args) {

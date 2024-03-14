@@ -1,4 +1,4 @@
-package com.fishman.user_center;
+package com.fishman.usercenter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
