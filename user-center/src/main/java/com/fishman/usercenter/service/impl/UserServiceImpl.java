@@ -16,6 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.fishman.usercenter.constant.UserConstant.USER_LOGIN_STATE;
+
 /**
 * @author fishman
 * @description 针对表【user】的数据库操作Service实现
@@ -29,7 +31,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public UserMapper userMapper;
 
     private static final String SALT="fishman";//加盐
-    private static final String USER_LOGIN_STATE="userLoginState";//记录用户登录状态
 
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword) {
@@ -79,7 +80,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User doLogin(String userAccount, String userPassword,HttpServletRequest request) {
+    public User userLogin(String userAccount, String userPassword,HttpServletRequest request) {
 // 1.校验用户的账户、密码是否符合要求
 // 1.1.非空校验
         if(StringUtils.isAnyBlank(userAccount, userPassword)) {
@@ -111,20 +112,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             log.info("user login failed, userAccount Cannot match userPassword");
         }
 // 3.用户信息脱敏，隐藏敏感信息，防止数据库中的字段泄露
-        User newUser = new User();
-        newUser.setId(user.getId());
-        newUser.setUsername(user.getUsername());
-        newUser.setUserAccount(user.getUserAccount());
-        newUser.setAvatarUrl(user.getAvatarUrl());
-        newUser.setGender(user.getGender());
-        newUser.setPhone(user.getPhone());
-        newUser.setEmail(user.getEmail());
-        newUser.setUserStatus(user.getUserStatus());
-        newUser.setCreateTime(user.getCreateTime());
+        User safetyUser = new User();
+        safetyUser.setId(user.getId());
+        safetyUser.setUsername(user.getUsername());
+        safetyUser.setUserAccount(user.getUserAccount());
+        safetyUser.setAvatarUrl(user.getAvatarUrl());
+        safetyUser.setGender(user.getGender());
+        safetyUser.setPhone(user.getPhone());
+        safetyUser.setEmail(user.getEmail());
+        safetyUser.setUserRole(user.getUserRole());
+        safetyUser.setUserStatus(user.getUserStatus());
+        safetyUser.setCreateTime(user.getCreateTime());
 // 4.记录用户的登录态（session），将其存到服务器上
-        request.getSession().setAttribute(USER_LOGIN_STATE, newUser);
+        request.getSession().setAttribute(USER_LOGIN_STATE, safetyUser);
 // 5.返回脱敏后的用户信息
-        return newUser;
+        return safetyUser;
     }
 }
 
