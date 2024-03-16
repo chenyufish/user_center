@@ -94,10 +94,20 @@ public class UserController {
     }
 
     /**
-     * 是否为管理员
+     * 用户注销
      * @param request
      * @return
      */
+    @PostMapping("/logout")
+    public Integer userLogout(HttpServletRequest request) {
+        if (request == null) return null;
+        return userService.userLogout(request);
+    }
+        /**
+         * 是否为管理员
+         * @param request
+         * @return
+         */
     private boolean isAdmin(HttpServletRequest request){
         Object userObj =request.getSession().getAttribute(USER_LOGIN_STATE);
         User user =(User) userObj;

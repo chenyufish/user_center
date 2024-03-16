@@ -144,6 +144,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 // 5.返回脱敏后的用户信息
         return safetyUser;
     }
+
+    /**
+     * 用户注销逻辑
+     * @param request
+     * @return
+     */
+    @Override
+    public int userLogout(HttpServletRequest request) {
+        request.getSession().removeAttribute(USER_LOGIN_STATE);
+        return 1;
+    }
 }
 
 
