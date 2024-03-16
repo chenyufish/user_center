@@ -1,9 +1,10 @@
 import { outLogin } from '@/services/ant-design-pro/api';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
-import { Spin } from 'antd';
+import {Avatar,Menu, Spin} from 'antd';
 import { createStyles } from 'antd-style';
 import { stringify } from 'querystring';
+import styles from './index.less';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
@@ -17,7 +18,7 @@ export type GlobalHeaderRightProps = {
 export const AvatarName = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
-  return <span className="anticon">{currentUser?.name}</span>;
+  return <span className="anticon">{currentUser?.username}</span>;
 };
 
 const useStyles = createStyles(({ token }) => {
@@ -95,7 +96,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
 
   const { currentUser } = initialState;
 
-  if (!currentUser || !currentUser.name) {
+  if (!currentUser || !currentUser.username) {
     return loading;
   }
 
@@ -132,6 +133,10 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
         items: menuItems,
       }}
     >
+        <span className={`${styles.action} ${styles.action}`}>
+            <Avatar size="small" className={styles.action} src={currentUser.avatarUrl} alt="avatar"/>
+            <span className={`${styles.action} anticon`}>{currentUser.username}</span>
+        </span>
       {children}
     </HeaderDropdown>
   );

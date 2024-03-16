@@ -112,19 +112,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             log.info("user login failed, userAccount Cannot match userPassword");
         }
 // 3.用户信息脱敏，隐藏敏感信息，防止数据库中的字段泄露
-        User safetyUser = new User();
-        safetyUser.setId(user.getId());
-        safetyUser.setUsername(user.getUsername());
-        safetyUser.setUserAccount(user.getUserAccount());
-        safetyUser.setAvatarUrl(user.getAvatarUrl());
-        safetyUser.setGender(user.getGender());
-        safetyUser.setPhone(user.getPhone());
-        safetyUser.setEmail(user.getEmail());
-        safetyUser.setUserRole(user.getUserRole());
-        safetyUser.setUserStatus(user.getUserStatus());
-        safetyUser.setCreateTime(user.getCreateTime());
+        User safetyUser = null;
+        if (user != null) {
+            safetyUser = getSafetyUser(user);
+        }
 // 4.记录用户的登录态（session），将其存到服务器上
         request.getSession().setAttribute(USER_LOGIN_STATE, safetyUser);
+// 5.返回脱敏后的用户信息
+        return safetyUser;
+    }
+
+    /**
+     * 用户脱敏
+     * @param originUser
+     * @return
+     */
+    @Override
+    public User getSafetyUser(User originUser){
+        if(originUser==null) return null;
+        User safetyUser = new User();
+        safetyUser.setId(originUser.getId());
+        safetyUser.setUsername(originUser.getUsername());
+        safetyUser.setUserAccount(originUser.getUserAccount());
+        safetyUser.setAvatarUrl(originUser.getAvatarUrl());
+        safetyUser.setGender(originUser.getGender());
+        safetyUser.setPhone(originUser.getPhone());
+        safetyUser.setEmail(originUser.getEmail());
+        safetyUser.setUserRole(originUser.getUserRole());
+        safetyUser.setUserStatus(originUser.getUserStatus());
+        safetyUser.setCreateTime(originUser.getCreateTime());
 // 5.返回脱敏后的用户信息
         return safetyUser;
     }

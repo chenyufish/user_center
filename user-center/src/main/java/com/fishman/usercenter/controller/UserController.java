@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.fishman.usercenter.constant.UserConstant.ADMIN_ROLE;
 import static com.fishman.usercenter.constant.UserConstant.USER_LOGIN_STATE;
@@ -63,7 +64,8 @@ public class UserController {
         if(!isAdmin(request)) return new ArrayList<>();
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         if(StringUtils.isNotBlank(username)) queryWrapper.like("username",username);
-        return userService.list(queryWrapper);
+        List <User> userList =userService.list(queryWrapper);
+        return userList.stream().map(user->userService.getSafetyUser(user)).collect(Collectors.toList());
     }
     /**
      * 用户删除
@@ -76,6 +78,19 @@ public class UserController {
         if(!isAdmin(request)) return false;
         if(id<=0) return false;
         return userService.removeById(id);
+    }
+
+    /**
+     * 获取当前用户
+     */
+    @PostMapping("/current")
+    public User getCurrentUser(HttpServletRequest request){
+        Object userObj =request.getSession().getAttribute(USER_LOGIN_STATE);
+        User currentUser=(User) userObj;
+        if(currentUser==null) return null;
+        long userId=currentUser.getId();
+        User user=userService.getById(userId);
+        return userService.getSafetyUser(user);
     }
 
     /**
