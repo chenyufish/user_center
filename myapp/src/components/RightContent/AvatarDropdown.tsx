@@ -4,7 +4,6 @@ import { history, useModel } from '@umijs/max';
 import {Avatar,Menu, Spin} from 'antd';
 import { createStyles } from 'antd-style';
 import { stringify } from 'querystring';
-import styles from './index.less';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
@@ -36,6 +35,20 @@ const useStyles = createStyles(({ token }) => {
         backgroundColor: token.colorBgTextHover,
       },
     },
+      account: {
+          // 添加账户相关样式
+          fontWeight: 'bold',
+          color: 'blue',
+      },
+      avatar: {
+          // 添加头像相关样式
+          marginRight: '8px',
+          borderRadius: '50%',
+      },
+      name: {
+          // 添加名称相关样式
+          color: 'green',
+      },
   };
 });
 
@@ -126,6 +139,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
   ];
 
   return (
+      //TODO 解决头像一直加载的问题
     <HeaderDropdown
       menu={{
         selectedKeys: [],
@@ -133,10 +147,10 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
         items: menuItems,
       }}
     >
-        <span className={`${styles.action} ${styles.action}`}>
-            <Avatar size="small" className={styles.action} src={currentUser.avatarUrl} alt="avatar"/>
-            <span className={`${styles.action} anticon`}>{currentUser.username}</span>
-        </span>
+      <span className={`${styles.action} ${styles.account}`}>
+        <Avatar size="small" className={styles.avatar} src={currentUser.avatarUrl} alt="avatarUrl" />
+        <span className={`${styles.name} anticon`}>{currentUser.username ?? '无名'}</span>
+      </span>
       {children}
     </HeaderDropdown>
   );
