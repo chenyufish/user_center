@@ -8,6 +8,7 @@ import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
+import {size} from "lodash";
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -86,7 +87,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
         loginOut();
         return;
       }
-      history.push(`/account/${key}`);
+      history.push(`/login/${key}`);
     },
     [setInitialState],
   );
@@ -114,23 +115,6 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
   }
 
   const menuItems = [
-    ...(menu
-      ? [
-          {
-            key: 'center',
-            icon: <UserOutlined />,
-            label: '个人中心',
-          },
-          {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: '个人设置',
-          },
-          {
-            type: 'divider' as const,
-          },
-        ]
-      : []),
     {
       key: 'logout',
       icon: <LogoutOutlined />,
@@ -140,18 +124,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
 
   return (
       //TODO 解决头像一直加载的问题
-    <HeaderDropdown
-      menu={{
-        selectedKeys: [],
-        onClick: onMenuClick,
-        items: menuItems,
-      }}
-    >
+    <HeaderDropdown overlay={menuItems}>
       <span className={`${styles.action} ${styles.account}`}>
         <Avatar size="small" className={styles.avatar} src={currentUser.avatarUrl} alt="avatarUrl" />
         <span className={`${styles.name} anticon`}>{currentUser.username ?? '无名'}</span>
       </span>
-      {children}
     </HeaderDropdown>
   );
 };

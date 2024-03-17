@@ -15,6 +15,8 @@ const loginPath = '/user/login';
  * */
 
 const NO_NEED_LOGIN_WHITE_LIST = ['/user/register',loginPath];
+
+
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
