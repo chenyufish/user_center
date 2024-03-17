@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 030610CHENyu
-    url: jdbc:mysql://localhost:3306/user_center
+    url: jdbc:mysql://124.221.200.188:3306/user_center
   session:
     timeout: 86400
 server:
